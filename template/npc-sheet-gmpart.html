@@ -1,0 +1,97 @@
+            <h3 class="gm-section">{{localize "ls.gmSettings"}}</h3>
+
+            <!-- GM SETTINGS -->
+            <div class="gm-settings" data-group="sidebar" data-tab="gm-settings">
+                <h3 class="gm-header"><i class="fas fa-id-card"></i> {{localize "ls.type"}} <i class="fas fa-info-circle help" onclick="$('.sheet-type-info').toggle();"></i></h3>
+                <div class="sheet-type-info">{{localize "ls.typeInfo"}}</div>
+                <div class="sheet-types">
+                    <div class="flexrow">
+                        <div class="flexcol"><h4 class="sheet-name">{{localize "ls.typeOfSheet"}}:</h4></div>
+                        <div class="flexcol">
+                            <select class="sheet-type" name="flags.d35elootsheetnpc.lootsheettype">
+                                {{#select actor.flags.d35elootsheetnpc.lootsheettype}}
+                                    <option value="Loot">{{localize "ls.typeLoot"}}</option>
+                                    <option value="Merchant">{{localize "ls.typeMerchant"}}</option>
+                                {{/select}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <h3 class="gm-header"><i class="fas fa-users"></i> {{localize "ls.permissions"}} <i class="fas fa-info-circle help" onclick="$('.permission-info').toggle();"></i></h3>
+                <div class="permission-info">{{localize "ls.permissionsInfo"}}</div>
+                {{#if actor.flags.loot.warning}}
+                  <div class="warning">{{localize "ERROR.lsInvalidParentPermission"}}</div>
+                {{/if}}
+                {{#unless actor.flags.loot.warning}}
+                <ol class="permissions-list">
+                    {{#each actor.flags.loot.players as |player p|}}
+                        <li class="permission">
+                            <input type="hidden" name="{{player.playerId}}" value="{{player.lootPermission}}" data-dtype="Number" actor="{{player.actorId}}"/>
+                            <a class="permission-proficiency" title="{{player.lootPermissionDescription}}">{{{player.icon}}}</a>
+                            <h4 class="permission-name">{{player.actor}} ({{player.name}})</h4>
+                        </li>
+                    {{/each}}
+                    <div class="batch-update">{{localize "ls.batchUpdate"}}
+                      <a class="permission-batch" title="{{localize "ls.permissionNoaccess"}}" data-perm="0"><i class="far fa-circle"></i></a>
+                      <a class="permission-batch" title="{{localize "ls.permissionLimited"}}" data-perm="1"><i class="fas fa-eye"></i></a>
+                      <a class="permission-batch" title="{{localize "ls.permissionObserver"}}" data-perm="2"><i class="fas fa-check"></i></a>
+                    </div>
+                </ol>
+                {{/unless}}
+
+                {{#ifeq lootsheettype "Loot"}}
+                    <h3 class="gm-header"><i class="fas fa-tools"></i> {{localize "ls.lsOptions"}}</h3>
+                    <div class="flexrow">
+                        <div class="flexcol"><h4>{{localize "ls.enableDragging"}} <i class="fas fa-info-circle help" title="{{localize "ls.enableDraggingTooltip"}}"></i></h4></div>
+                        <div class="flexcol"><input name="flags.d35elootsheetnpc.dragEnabled" type="checkbox" value="{{actor.flags.d35elootsheetnpc.dragEnabled}}" {{#if actor.flags.d35elootsheetnpc.dragEnabled}}checked{{/if}} /></div>
+                    </div>
+                    <div class="flexrow">
+                        <div class="flexcol"><h4>{{localize "ls.maxCapacity"}} <i class="fas fa-info-circle help" title="{{localize "ls.maxCapacityTooltip"}}"></i></h4></div>
+                        <div class="flexcol"><input name="flags.d35elootsheetnpc.maxCapacity" type="text" data-dtype="Number" placeholder="e.g. 10" value="{{actor.flags.d35elootsheetnpc.maxCapacity}}"/></div>
+                    </div>
+                    <div class="flexrow">
+                        <div class="flexcol"><h4>{{localize "ls.maxLoad"}} <i class="fas fa-info-circle help" title="{{localize "ls.maxLoadTooltip"}}"></i></h4></div>
+                        <div class="flexcol"><input name="flags.d35elootsheetnpc.maxLoad" type="text" data-dtype="Number" placeholder="e.g. 200" value="{{actor.flags.d35elootsheetnpc.maxLoad}}"/></div>
+                    </div>
+                    <h3 class="gm-header"><i class="fas fa-coins"></i> {{localize "ls.coinDistribution"}}</h3>
+                    <ol class="coins-list">
+                        {{#each actor.flags.loot.currency as |c i|}}
+                            <li class="denomination {{i}}">
+                                <label>{{ lookup ../config.currencies i }}:</label>
+                                <h4 class="denomination-value">{{c}} {{localize "ls.each"}}</h4>
+                            </li>
+                        {{/each}}
+                    </ol>
+                    <button class= "split-coins" type="split-coins" name="split-coins" value="1"><i class="fa fa-coins"></i> {{localize "ls.splitBy"}} {{actor.flags.loot.ownerCount}}</button>
+                {{/ifeq}}
+
+                {{#ifeq lootsheettype "Merchant"}}
+                    <h3 class="gm-header"><i class="fas fa-balance-scale"></i> {{localize "ls.merchantSettings"}} <i class="fas fa-info-circle help" onclick="$('.merchant-settings-info').toggle();"></i></h3>
+                    <div class="merchant-settings-info">{{localize "ls.merchantInfo"}}</div>
+                    <div class="merchant-settings">
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>{{localize "ls.rollableTable"}}: </h4></div>
+                            <div class="flexcol">
+                                <select style="width: 96px" class="sheet-rolltable" name="flags.d35elootsheetnpc.rolltable">
+                                    <option value="">{{localize "ls.chooseTable"}}</option>
+                                    {{#select actor.flags.d35elootsheetnpc.rolltable}}
+                                        {{#each rolltables as |table i|}}
+                                            <option value="{{table.name}}">{{table.name}}</option>
+                                        {{/each}}
+                                    {{/select}}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>{{localize "ls.shopQtyFormula"}}: </h4></div>
+                            <div class="flexcol"><input name="flags.d35elootsheetnpc.shopQty" type="text" data-dtype="String" placeholder="e.g. 1d20" value="{{actor.flags.d35elootsheetnpc.shopQty}}"/></div>
+                        </div>
+                        <div class="flexrow">
+                            <div class="flexcol"><h4>{{localize "ls.itemQtyFormula"}}: </h4></div>
+                            <div class="flexcol"><input name="flags.d35elootsheetnpc.itemQty" type="text" data-dtype="String" placeholder="e.g. 1d4" value="{{actor.flags.d35elootsheetnpc.itemQty}}"/></div>
+                        </div>
+                    </div>
+                    <button class="update-inventory" type="update-inventory" name="update-inventory" value="1"><i class="fas fa-balance-scale"></i> {{localize "ls.updateShopInventory"}} </button>
+                {{/ifeq}}
+            </div>

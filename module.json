@@ -1,0 +1,34 @@
+{
+    "name": "d35elootsheetnpc",
+    "title": "3.5e Loot Sheet NPC",
+    "description": "This module adds an additional NPC sheet which can be used for loot containers such as chests or shopkeepers.",
+    "version": "1.0.0",
+    "author": "Antoni 'Rughalt' Sobkowicz, based on Sven Werlen (originally from Jan Ole Peek (ChalkOne) and Charles Miller (Kage))",
+    "systems": [
+        "D35E"
+    ],
+    "esmodules": [
+        "/d35elootsheet.js"
+    ],
+    "styles": [
+        "/css/d35elootsheet.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        },
+        {
+            "lang": "fr",
+            "name": "French",
+            "path": "lang/fr.json"
+        }
+    ],
+    "socket": true,
+    "url": "https://github.com/Rughalt/d35e-loot-sheet-npc",
+    "download": "https://github.com/Rughalt/d35e-loot-sheet-npc/releases/download/1.0.0/module.zip",
+    "manifest": "https://github.com/Rughalt/d35e-loot-sheet-npc/releases/latest/download/module.json",
+    "minimumCoreVersion": "0.7.4",
+    "compatibleCoreVersion": "1.0.0"
+}
